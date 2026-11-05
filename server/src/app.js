@@ -16,5 +16,18 @@ app.use(cookieParser())
 
 
 // routes
+import authRouter from "./routes/auth.routes.js"
+import errorHandler from './middlewares/error.middleware.js';
+
+app.get("/", (req,res)=>{
+    res.status(200).json({
+        success: true,
+        message: "Api working",
+        date: new Date().toLocaleDateString()
+    })
+})
+app.use("/api/auth", authRouter)
+
+app.use(errorHandler)
 
 export {app}
