@@ -16,8 +16,10 @@ app.use(cookieParser())
 
 
 // routes
-import authRouter from "./routes/auth.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 import errorHandler from './middlewares/error.middleware.js';
+import protectedRoutes from "./routes/protected.routes.js";
+import userRoutes from "./routes/user.routes.js"
 
 app.get("/", (req,res)=>{
     res.status(200).json({
@@ -26,7 +28,9 @@ app.get("/", (req,res)=>{
         date: new Date().toLocaleDateString()
     })
 })
-app.use("/api/auth", authRouter)
+app.use("/api/auth", authRoutes)
+app.use("/api/protected", protectedRoutes);
+app.use("/api/users", userRoutes)
 
 app.use(errorHandler)
 

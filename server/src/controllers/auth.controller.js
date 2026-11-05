@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
+import jwt from "jsonwebtoken"
 
 
 const registerUser = async (req, res, next) =>{
@@ -127,9 +128,21 @@ const loginUser = async (req, res) =>{
         })
     }
 
+    const accessToken = jwt.sign(
+        {
+            userId: user._id.toString(),
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "15m",
+            algorithm: "HS256"
+        }
+    )
+
     return res.status(200).json({
         success: true,
         message: "Login successful",
+        accessToken,
         user: {
             id: user._id,
             name: user.name,
@@ -138,7 +151,8 @@ const loginUser = async (req, res) =>{
         }
     });
     } catch (error) {
-        next(error)
+        console.log(error);
+        
     }
 
 }
