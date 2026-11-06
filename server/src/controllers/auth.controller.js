@@ -147,9 +147,12 @@ const loginUser = async (req, res) => {
       });
     }
 
+    const sessionId = crypto.randomUUID();
+
     const accessToken = jwt.sign(
       {
         userId: user._id.toString(),
+        sessionId
       },
       process.env.JWT_SECRET,
       {
@@ -175,6 +178,7 @@ const loginUser = async (req, res) => {
 
     await RefreshToken.create({
       user: user._id,
+      sessionId,
       tokenHash,
       expiresAt,
       userAgent: req.get("user-agent") || null,
@@ -260,7 +264,9 @@ const refreshAccessToken = async (req, res, next) => {
     }
 
     const accessToken = jwt.sign(
-      { userId: storedToken.user.toString() },
+      { userId: storedToken.user.toString(),
+        sessionId: storedToken.sessionId
+       },
       process.env.JWT_SECRET,
       {
         expiresIn: "15m",
@@ -282,6 +288,7 @@ const refreshAccessToken = async (req, res, next) => {
 
     const newRefreshToken = await RefreshToken.create({
       user: storedToken.user,
+      sessionId: storedToken.sessionId,
       tokenHash: newTokenHash,
       expiresAt: newExpiresAt,
       userAgent: req.get("user-agent") || null,
