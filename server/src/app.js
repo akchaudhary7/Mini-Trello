@@ -20,11 +20,14 @@ import authRoutes from "./routes/auth.routes.js"
 import errorHandler from './middlewares/error.middleware.js';
 
 import userRoutes from "./routes/user.routes.js"
+import boardRoutes from "./routes/board.routes.js"
 
 
 app.use("/api/auth", authRoutes)
 
 app.use("/api/users", userRoutes)
+
+app.use("/api/boards", boardRoutes)
 
 app.use(errorHandler)
 
