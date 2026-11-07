@@ -8,11 +8,17 @@ import {
 } from "../controllers/auth.controller.js";
 
 import authenticate from "../middlewares/auth.middleware.js";
+import {
+  authLimiter,
+  loginLimiter,
+} from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
 
+router.use(authLimiter);
+
 router.route("/register").post(registerUser);
-router.route("/login").post(loginUser);
+router.post("/login", loginLimiter, loginUser);
 router.post("/refresh", refreshAccessToken);
 
 router.post("/logout", logutUser);
