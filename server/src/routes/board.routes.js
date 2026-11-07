@@ -9,6 +9,7 @@ import {
   listMyBoards,
   renameBoard,
   deleteBoard,
+  getOneBoard,
 } from "../controllers/board.controller.js";
 
 const router = Router();
@@ -16,6 +17,8 @@ const router = Router();
 router.post("/", authenticate, createBoard);
 
 router.get("/", authenticate, listMyBoards);
+
+router.get("/:boardId", authenticate, loadBoardMembership, getOneBoard);
 
 router.patch(
   "/:boardId",

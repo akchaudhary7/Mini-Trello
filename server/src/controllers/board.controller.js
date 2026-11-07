@@ -1,3 +1,4 @@
+import { response } from "express";
 import { Board } from "../models/board.model.js";
 
 const createBoard = async (req, res, next) => {
@@ -112,7 +113,7 @@ const deleteBoard = async (req, res, next)=>{
         if (!board){
             return res.status(400).json({
                 success: false,
-                message: "Board deletion failed"
+                message: "Board deletion failed!!!"
             })
         }
 
@@ -127,5 +128,17 @@ const deleteBoard = async (req, res, next)=>{
     }
 }
 
+const getOneBoard = async(req, res, next)=>{
+    try {
+        return res.status(200).json({
+            success: true,
+            message: "Board retrieved successfully",
+            board: req.board,
+            role: req.boardRole
+        })
+    } catch (error) {
+        next(error)
+    }
+}
 
-export { createBoard, listMyBoards, renameBoard, deleteBoard };
+export { createBoard, listMyBoards, renameBoard, deleteBoard , getOneBoard};
